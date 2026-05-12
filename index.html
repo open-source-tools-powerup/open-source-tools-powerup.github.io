@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PowerUp 2026 | Open-source tools for power and energy systems</title>
+  <meta name="description" content="PowerUp 2026 Workshop: a hands-on tutorial on open-source tools for power and energy systems, featuring HERMES, STING, Pyoframe, and Daline." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --text:    #1c1c1c;
+      --muted:   #555;
+      --rule:    #d8d8d8;
+      --accent:  #1a4480;
+      --link:    #1a4480;
+      --link-h:  #0d2a52;
+      --bg:      #ffffff;
+      --bg-alt:  #f7f7f5;
+      --maxw:    980px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Lato", "Helvetica Neue", Arial, sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: var(--link-h); text-decoration: underline; }
+
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- Header / nav ---------- */
+    header.top {
+      border-bottom: 1px solid var(--rule);
+      background: var(--bg);
+    }
+    .top-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .top-logo { display: block; line-height: 0; }
+    .top-logo img { height: 40px; width: auto; display: block; }
+
+    nav.anchors {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 22px;
+      font-size: 14.5px;
+    }
+    nav.anchors a {
+      color: var(--text);
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+    }
+    nav.anchors a:hover {
+      color: var(--link);
+      border-bottom-color: var(--link);
+      text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+      .top-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .top-logo img { height: 34px; }
+    }
+
+    /* ---------- Title block ---------- */
+    .title-block {
+      padding: 56px 0 36px;
+      border-bottom: 1px solid var(--rule);
+    }
+    h1 {
+      font-weight: 700;
+      font-size: clamp(28px, 4.2vw, 40px);
+      line-height: 1.2;
+      margin: 0 0 18px;
+      letter-spacing: -0.005em;
+    }
+    .byline { font-size: 16px; margin: 0 0 6px; }
+    .byline .sep { color: var(--muted); margin: 0 8px; }
+    .date { font-size: 15px; color: var(--muted); margin: 0; }
+
+    /* ---------- Sections ---------- */
+    section { padding: 48px 0; border-bottom: 1px solid var(--rule); }
+    section:last-of-type { border-bottom: none; }
+
+    h2 {
+      font-weight: 700;
+      font-size: 26px;
+      line-height: 1.2;
+      margin: 0 0 22px;
+      letter-spacing: -0.005em;
+    }
+
+    p { margin: 0 0 14px; }
+    p:last-child { margin-bottom: 0; }
+
+    .intro p { font-size: 16.5px; max-width: 72ch; }
+
+    /* ---------- Tools ---------- */
+    .tools { display: grid; grid-template-columns: 1fr; gap: 28px; }
+    .tool {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 0 0 24px;
+      border-bottom: 1px dashed var(--rule);
+    }
+    .tools .tool:last-child { border-bottom: none; padding-bottom: 0; }
+    @media (min-width: 720px) {
+      .tool { grid-template-columns: 220px 1fr; gap: 28px; }
+    }
+    .tool .name { font-size: 20px; font-weight: 700; margin: 0; }
+    .tool .name small {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .tool .body { font-size: 16px; }
+    .tool .body .affil {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* ---------- Schedule ---------- */
+    table.schedule {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15.5px;
+      margin-top: 6px;
+    }
+    table.schedule th,
+    table.schedule td {
+      text-align: left;
+      vertical-align: top;
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--rule);
+    }
+    table.schedule thead th {
+      background: var(--bg-alt);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 2px solid var(--rule);
+    }
+    table.schedule td.time {
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      width: 130px;
+    }
+    table.schedule td.session { width: 180px; font-weight: 700; }
+    table.schedule td.desc .tool-name { font-weight: 700; }
+    table.schedule tr.break td { color: var(--muted); font-style: italic; }
+
+    @media (max-width: 720px) {
+      table.schedule, table.schedule thead, table.schedule tbody,
+      table.schedule tr, table.schedule th, table.schedule td { display: block; width: 100%; }
+      table.schedule thead { display: none; }
+      table.schedule tr { border-bottom: 1px solid var(--rule); padding: 14px 0; }
+      table.schedule td { border: none; padding: 4px 0; }
+      table.schedule td.time { font-weight: 700; }
+      table.schedule td.session { width: auto; }
+    }
+
+    /* ---------- Organizers ---------- */
+    .org-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+    @media (min-width: 640px) {
+      .org-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    }
+    .org { display: flex; flex-direction: column; gap: 6px; }
+    .org .photo {
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--rule);
+      display: block;
+      margin-bottom: 10px;
+    }
+    .org h3 { margin: 4px 0 2px; font-size: 18px; font-weight: 700; }
+    .org .affil { font-size: 14.5px; color: var(--muted); margin: 0 0 6px; }
+    .org .bio { font-size: 15px; margin: 0; }
+
+    /* ---------- Footer ---------- */
+    footer {
+      padding: 28px 0 48px;
+      border-top: 1px solid var(--rule);
+      font-size: 13.5px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============== HEADER ============== -->
+  <header class="top">
+    <div class="top-inner">
+      <a class="top-logo" href="#">
+        <img src="images/PowerUp_logo.png" alt="PowerUp 2026" />
+      </a>
+      <nav class="anchors">
+        <a href="#about">About</a>
+        <a href="#tools">Tools</a>
+        <a href="#agenda">Agenda</a>
+        <a href="#organizers">Organizers</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============== TITLE ============== -->
+  <div class="wrap">
+    <div class="title-block">
+      <h1>Open-source tools for power and energy systems</h1>
+      <p class="byline">
+        <a href="#organizers">Patricia Hidalgo-Gonzalez</a>
+        <span class="sep">·</span>
+        <a href="#organizers">Gabriela Hug</a>
+      </p>
+      <p class="date">12 May 2026 &nbsp;·&nbsp; 08:30 – 12:00</p>
+    </div>
+  </div>
+
+  <!-- ============== ABOUT ============== -->
+  <section id="about">
+    <div class="wrap intro">
+      <h2>About</h2>
+      <p>
+        Modern power system modeling and analysis spans multiple layers,
+        from electromagnetic transient simulations, to small-signal modeling,
+        and to large-scale optimization problems. Open-source platforms are
+        becoming central because they enable reproducibility, accelerate
+        innovation, and lower entry barriers for users.
+      </p>
+      <p>
+        In this hands-on tutorial we will introduce participants to four
+        open-source tools, guide interactive demonstrations and activities,
+        and offer opportunities to engage directly with developers.
+        Importantly, we have an &ldquo;all questions are good questions&rdquo;
+        policy to encourage participation and create a welcoming environment
+        for all participants.
+      </p>
+      <p>
+        We will teach how to use the following open-source tools:
+        <strong>HERMES</strong> (Hybrid EMT/RMS Modern Electric power system
+        Simulator, ETH Zurich), <strong>STING</strong> (Small-signal modeling
+        Tool for Inverter-based Grids, UC San Diego), <strong>Pyoframe</strong>
+        (fast and memory-efficient DataFrame-based modeling interface for
+        optimization problems, Bravos Power, UC San Diego and MIT), and
+        <strong>Daline</strong> (data-driven power flow linearization toolbox,
+        Shanghai Jiao Tong University).
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== TOOLS ============== -->
+  <section id="tools">
+    <div class="wrap">
+      <h2>Featured tools</h2>
+      <div class="tools">
+
+        <div class="tool">
+          <div>
+            <p class="name">HERMES <small>Hybrid EMT/RMS Modern Electric power system Simulator</small></p>
+          </div>
+          <div class="body">
+            <p>
+              A simulator for modern power-system dynamic analysis,
+              combining electromagnetic-transient and phasor-domain
+              modeling for advanced stability studies.
+            </p>
+            <p class="affil">ETH Zurich</p>
+          </div>
+        </div>
+
+        <div class="tool">
+          <div>
+            <p class="name">STING <small>Small-signal modeling Tool for Inverter-based Grids</small></p>
+          </div>
+          <div class="body">
+            <p>
+              A tool for small-signal analysis, control design, and
+              model-order reduction of inverter-dominated grids.
+            </p>
+            <p class="affil">UC San Diego</p>
+          </div>
+        </div>
+
+        <div class="tool">
+          <div>
+            <p class="name">Pyoframe <small>DataFrame-based modeling interface for optimization problems</small></p>
+          </div>
+          <div class="body">
+            <p>
+              A fast and memory-efficient Python library for building
+              large optimization models, featuring automatic
+              multi-threading, fast resolves, and a legible syntax.
+            </p>
+            <p class="affil">Bravos Power, UC San Diego, MIT</p>
+          </div>
+        </div>
+
+        <div class="tool">
+          <div>
+            <p class="name">Daline <small>Data-driven power flow linearization toolbox</small></p>
+          </div>
+          <div class="body">
+            <p>
+              A toolbox implementing 40+ mainstream data-driven power
+              flow linearization methods, paired with RePower, an
+              LLM-driven platform that supports autonomous research for
+              data-driven tasks in power systems.
+            </p>
+            <p class="affil">Shanghai Jiao Tong University</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== AGENDA ============== -->
+  <section id="agenda">
+    <div class="wrap">
+      <h2>Agenda</h2>
+      <p style="font-size: 15.5px; color: var(--muted); margin-bottom: 18px;">
+        Four hands-on interactive tutorial sessions.
+      </p>
+
+      <table class="schedule">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Session</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td class="time">08:30 – 08:40</td>
+            <td class="session">Introduction</td>
+            <td class="desc">Welcome, goals, overview.</td>
+          </tr>
+
+          <tr>
+            <td class="time">08:40 – 09:25</td>
+            <td class="session">Interactive tutorial</td>
+            <td class="desc">
+              <span class="tool-name">HERMES.</span>
+              We will provide a brief introduction and overview of HERMES
+              (10&nbsp;min). Then we will demonstrate, through a hands-on
+              example, how HERMES can be used for standard modern
+              power-system dynamic analysis (15&nbsp;min). Finally, we will
+              conduct an interactive demonstration for advanced
+              power-system stability analysis (20&nbsp;min).
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">09:25 – 10:10</td>
+            <td class="session">Interactive tutorial</td>
+            <td class="desc">
+              <span class="tool-name">STING: Small-signal modeling Tool for Inverter-based Grids.</span>
+              We will provide a brief introduction and overview of STING
+              (5&nbsp;min), and then hold an interactive tutorial session
+              on how to implement examples and how to use STING for
+              small-signal analysis, control, and model-order reduction
+              of inverter-dominated grids (35&nbsp;min).
+            </td>
+          </tr>
+
+          <tr class="break">
+            <td class="time">10:10 – 10:30</td>
+            <td class="session">Break</td>
+            <td class="desc">Coffee.</td>
+          </tr>
+
+          <tr>
+            <td class="time">10:30 – 11:15</td>
+            <td class="session">Coding challenge</td>
+            <td class="desc">
+              <span class="tool-name">Pyoframe: A Python Library for Building Large Optimization Models.</span>
+              Beginning with a brief (10&nbsp;min) presentation, we will
+              introduce key concepts and mental models needed for
+              participants to feel competent using optimization modeling
+              tools, and will discuss the latest available tools and
+              their tradeoffs. Then, participants will apply these
+              concepts by implementing their own energy systems
+              optimization model in Pyoframe during a 35&nbsp;min guided
+              coding challenge. Participants will leave capable of using
+              Pyoframe&rsquo;s unique features (automatic multi-threading,
+              fast resolves, legible syntax, friendly user experience,
+              etc.) to build large and informative optimization models.
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">11:15 – 12:00</td>
+            <td class="session">Interactive tutorial</td>
+            <td class="desc">
+              <span class="tool-name">Daline.</span>
+              We will provide a brief introduction and overview of Daline
+              (5&nbsp;min). Then, we will hold a tutorial coding session
+              on how to quickly linearize power flows, we will compare
+              mainstream data-driven power flow linearization methods
+              (40+ methods), and we will demonstrate RePower, an LLM-driven
+              platform that supports autonomous research for data-driven
+              tasks in power systems (40&nbsp;min).
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============== ORGANIZERS ============== -->
+  <section id="organizers">
+    <div class="wrap">
+      <h2>Organizers</h2>
+
+      <div class="org-grid">
+
+        <div class="org">
+          <img src="images/patricia.jpg" alt="Patricia Hidalgo-Gonzalez" class="photo" />
+          <h3>Patricia Hidalgo-Gonzalez</h3>
+          <p class="affil">Assistant Professor, UC San Diego</p>
+          <p class="bio">
+            Patricia Hidalgo-Gonzalez is an Assistant Professor in
+            Mechanical and Aerospace Engineering and the Center for
+            Energy Research at UC San Diego. Her work focuses on high
+            penetration of renewable energy (long-term planning and
+            control of power dynamics) using optimization, control
+            theory and machine learning.
+          </p>
+        </div>
+
+        <div class="org">
+          <img src="images/ghug.jpg" alt="Gabriela Hug" class="photo" />
+          <h3>Gabriela Hug</h3>
+          <p class="affil">Full Professor, ETH Zurich</p>
+          <p class="bio">
+            Gabriela Hug is a Full Professor and Head of the Department
+            of Information Technology and Electrical Engineering at ETH
+            Zurich. She is also the Head of the Energy Science Center.
+            She develops computational methods and tools which ensure
+            a reliable and efficient operation of the future power grid
+            dealing with the inherent uncertainty of variable renewable
+            generation.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== CONTACT ============== -->
+  <section id="contact">
+    <div class="wrap">
+      <h2>Contact</h2>
+      <p>
+        For questions about the workshop program or registration, please
+        contact the organizers:
+        Patricia Hidalgo-Gonzalez
+        (<a href="mailto:phidalgogonzalez@ucsd.edu">phidalgogonzalez@ucsd.edu</a>)
+        or Gabriela Hug
+        (<a href="mailto:hug@eeh.ee.ethz.ch">hug@eeh.ee.ethz.ch</a>).
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== FOOTER ============== -->
+  <footer>
+    <div class="wrap">
+      PowerUp 2026 Workshop &nbsp;·&nbsp; Open-source tools for power and energy systems
+    </div>
+  </footer>
+
+</body>
+</html>
