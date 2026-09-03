@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PowerUp 2026 | Open-source tools for power and energy systems</title>
-  <meta name="description" content="PowerUp 2026 Workshop: a hands-on tutorial on open-source tools for power and energy systems, featuring HERMES, STING, Pyoframe, and Daline." />
+  <meta name="description" content="PowerUp 2026 Workshop: a hands-on tutorial on open-source tools for power and energy systems, featuring HERMESS, STING, Pyoframe, and Daline." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -277,7 +277,7 @@
       </p>
       <p>
         We will teach how to use the following open-source tools:
-        <strong>HERMES</strong> (Hybrid EMT/RMS Modern Electric power system
+        <strong>HERMESS</strong> (Hybrid EMT/RMS Modern Electric power System
         Simulator, ETH Zurich), <strong>STING</strong> (Specialized Tool for 
         INverter-based Grids, UC San Diego), <strong>Pyoframe</strong>
         (fast and memory-efficient DataFrame-based modeling interface for
@@ -296,15 +296,48 @@
 
         <div class="tool">
           <div>
-            <p class="name">HERMES <small>Hybrid EMT/RMS Modern Electric power system Simulator</small></p>
+            <p class="name">HERMESS <small>Hybrid EMT/RMS Modern Electric power System Simulator</small></p>
           </div>
           <div class="body">
             <p>
-              A simulator for modern power-system dynamic analysis,
-              combining electromagnetic-transient and phasor-domain
-              modeling for advanced stability studies.
+              An open-source dynamic simulator for power systems written as
+              nonlinear differential-algebraic equations, with a CasADi symbolic
+              core: hybrid EMT/RMS network modeling in one model, small-signal
+              analysis as a configuration flag, every device parameter available
+              as a symbol, and a simulator that is differentiable end to end.
+              A desktop GUI and a Python API share the same engine.
             </p>
             <p class="affil">ETH Zurich</p>
+            <p>
+              <a href="https://github.com/maitrayadesai/hermess">Code</a>
+              (GPL-3.0, <code>pip install hermess</code>)
+              &nbsp;&middot;&nbsp;
+              <a href="https://maitrayadesai.github.io/hermess/">Documentation</a>
+            </p>
+            <p>
+              Tutorial notebooks, either in the browser on Google Colab (nothing
+              to install; the first cell installs <code>hermess</code>) or from
+              the <code>HERMESS</code> folder of the workshop repository. The
+              <em>live</em> copies have the setup cells filled in and the rest
+              empty, for typing along during the session; the <em>complete</em>
+              copies carry all code and outputs.
+            </p>
+            <p>
+              Type along:<br>
+              <a href="https://colab.research.google.com/github/open-source-tools-powerup/PowerUp2026-Workshop-Tutorials/blob/main/HERMESS/live/01_standard_dynamics_live.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" style="vertical-align:middle;height:20px"></a>&nbsp;01, standard dynamic analysis<br>
+              <a href="https://colab.research.google.com/github/open-source-tools-powerup/PowerUp2026-Workshop-Tutorials/blob/main/HERMESS/live/02_advanced_stability_live.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" style="vertical-align:middle;height:20px"></a>&nbsp;02, write a model, tune it through the simulator
+            </p>
+            <p>
+              Complete, with outputs:<br>
+              <a href="https://colab.research.google.com/github/open-source-tools-powerup/PowerUp2026-Workshop-Tutorials/blob/main/HERMESS/01_standard_dynamics.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" style="vertical-align:middle;height:20px"></a>&nbsp;01, standard dynamic analysis<br>
+              <a href="https://colab.research.google.com/github/open-source-tools-powerup/PowerUp2026-Workshop-Tutorials/blob/main/HERMESS/02_advanced_stability.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" style="vertical-align:middle;height:20px"></a>&nbsp;02, write a model, tune it through the simulator
+            </p>
+            <p>
+              A notebook opened from these links is a scratch copy; use
+              &ldquo;Save a copy in Drive&rdquo; in Colab to keep your edits. The
+              desktop GUI shown in the session is local-only and optional:
+              <code>pip install "hermess[gui]"</code>, then <code>hermess-gui</code>.
+            </p>
           </div>
         </div>
 
@@ -385,13 +418,17 @@
             <td class="time">08:40 – 09:25</td>
             <td class="session">Interactive tutorial</td>
             <td class="desc">
-              <span class="tool-name">HERMES.</span>
-              We will provide a brief introduction and overview of HERMES
-              (10&nbsp;min). Then we will demonstrate, through a hands-on
-              example, how HERMES can be used for standard modern
-              power-system dynamic analysis (15&nbsp;min). Finally, we will
-              conduct an interactive demonstration for advanced
-              power-system stability analysis (20&nbsp;min).
+              <span class="tool-name">HERMESS.</span>
+              We will provide a brief introduction and overview of HERMESS
+              (10&nbsp;min). Then we will run the same study twice: a
+              standard dynamic analysis of a small system in the desktop GUI
+              (10&nbsp;min), followed by the identical run in a notebook that
+              participants type along, covering time-domain, hybrid EMT/RMS
+              and small-signal analysis (10&nbsp;min). Finally, an
+              advanced-usage demonstration: writing a new converter control
+              strategy live, tuning it by gradient descent through the
+              simulator, and reading which parameter moves which mode off the
+              s-plane (15&nbsp;min).
             </td>
           </tr>
 
